@@ -32,3 +32,5 @@ Teacher self-service, Admin-only approval, actual minutes × hourly MMK rate, ma
 The initial sample has two class records awaiting verification and two pending corrections. After verifying S0001/S0002, the base fixture is 785 minutes / 147,000 MMK. After approving both pending corrections and verifying the affected sessions, it is 980 minutes / 182,500 MMK.
 
 Prototype policy controls are intentionally simpler than production: class assignments use current selections rather than dated intervals, and long-duration exceptions are acknowledged with an Admin review reason. The prototype is intended for product and interaction review.
+
+https://part-time-teacher-management-a9uazeoak-ryan1996js-projects.vercel.app/
