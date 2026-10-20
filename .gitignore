@@ -1,0 +1,12 @@
+# Local hosting metadata and previous design concepts
+.openai/
+design-references/
+# Secrets and installed dependencies
+.env*
+node_modules/
+# Generated archives, coverage and local logs
+*.zip
+*.tar.gz
+coverage/
+*.log
+.DS_Store
