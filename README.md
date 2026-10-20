@@ -47,8 +47,6 @@ The initial sample has two class records awaiting verification and two pending c
 
 Prototype policy controls are intentionally simpler than production: class assignments use current selections rather than dated intervals, and long-duration exceptions are acknowledged with an Admin review reason. The prototype is intended for product and interaction review.
 
-## Existing deployment
+## Live website
 
-[Existing Vercel deployment](https://part-time-teacher-management-a9uazeoak-ryan1996js-projects.vercel.app/)
-
-This link is preserved from the repository. Publishing source to this branch does not confirm a new Vercel deployment.
+[Part-Time Teacher Management live website](https://part-time-teacher-management.vercel.app/)
