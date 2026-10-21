@@ -1,4 +1,4 @@
-# Ai14 EduControl UI prototype
+# SayaSync · Part-Time Teacher Management
 
 Approved PRD v0.3 implemented as a browser-only interactive prototype using **HTML, Tailwind CSS and jQuery**. No backend, API, database, real authentication, account invitation or payment processing is included.
 
@@ -6,32 +6,25 @@ Approved PRD v0.3 implemented as a browser-only interactive prototype using **HT
 
 Serve `dist` with a static web server so sign-in and the workspace share the same browser origin. On this Windows machine, double-click `start-preview.cmd`, then open `http://127.0.0.1:4173/`. Alternatively run `python -m http.server 4173 --bind 127.0.0.1 --directory dist` from the project folder. This server serves static files only; it contains no application backend or database. Tailwind and jQuery are included locally; no external services or build step are needed.
 
-The entry page redirects to **one approved login**: email/password + CAPTCHA → two-step code → role workspace. Old preview URLs redirect to `login.html`.
-
-| Demo role | Email | Password |
-|---|---|---|
-| Admin | admin@ai14.demo | Admin123! |
-| Teacher | teacher@ai14.demo | Teacher123! |
-
-Use the demo account buttons to fill credentials, type the displayed CAPTCHA, then select **Fill demo code** and **Verify & continue**. No email or SMS is sent. Wrong or expired codes show errors; Resend generates a new two-minute demo code. Sign out returns to login. A Teacher login opens Aye Aye Win's workspace; it cannot switch to another teacher or an Admin role through the UI.
+The entry page uses the original login layout as a click-through demo. Select Admin or Teacher (default Admin), then click **Enter demo workspace**. All input fields can be empty or contain arbitrary text; values are not read, validated or transmitted. CAPTCHA is decorative and there is no OTP step. Old preview URLs redirect to `login.html`.
 
 ## Explore
 
 - Admin: Overview → Verification → review corrections → Class records → verify completed sessions → Payroll → calculate 12–18 October 2026 → inspect/adjust → approve → Payment history → record a fictional payment.
-- Teacher: sign out and sign in with the Teacher demo account. Check in/out of assigned classes, view personal class records, submit corrections and see approved payments.
+- Teacher: select Choose demo role, select Teacher demo, then Enter demo workspace. Check in/out of assigned classes, view personal class records, submit corrections and see approved payments.
 - Teachers: add demo profiles, add hourly rate versions and activate/deactivate profiles.
 - Classes: add subjects and edit teacher assignments.
 - Activity log: inspect the history of demo changes.
 - Reset demo data: restore all fictional records.
 
-Workspace changes persist only in this browser's localStorage. Demo login state uses sessionStorage and is cleared on Sign out. Passwords and verification codes are not persisted in either storage. This is client-side simulation, not secure authentication or real access enforcement. Live check-in/out uses the browser clock, whereas production would need server timestamps. Profile contact details and all payment references are fictional. No funds are transferred.
+Workspace changes persist only in this browser's localStorage. Demo role state uses sessionStorage and is cleared with Choose demo role. No credentials or verification codes are collected. This is client-side simulation, not secure authentication or real access enforcement. Live check-in/out uses the browser clock, whereas production would need server timestamps. Profile contact details and all payment references are fictional. No funds are transferred.
 
 ## Files
 
 - `dist/index.html`: application shell and dialog container.
-- `dist/login.html`: approved login and two-step verification forms.
-- `dist/assets/login.js`: simulated credential, CAPTCHA and two-step checks.
-- `dist/assets/auth-guard.js`: demo login routing and signed-out refresh handling.
+- `dist/login.html`: original login appearance with click-through demo entry.
+- `dist/assets/login.js`: browser-only demo role selection.
+- `dist/assets/app.js` handles demo session routing when the workspace starts; there is no separate auth-guard script.
 - `dist/assets/styles.css`: responsive visual design.
 - `dist/assets/tailwind-browser.js`: vendored Tailwind browser runtime v4.1.18.
 - `dist/assets/jquery.min.js`: vendored jQuery v3.7.1, retaining its license header.
@@ -49,4 +42,12 @@ Prototype policy controls are intentionally simpler than production: class assig
 
 ## Live website
 
-[Part-Time Teacher Management live website](https://part-time-teacher-management.vercel.app/)
+[SayaSync live website](https://part-time-teacher-management.vercel.app/)
+
+[Open the demo login](https://part-time-teacher-management.vercel.app/login.html)
+
+The stable production domain stays the same when a new version is deployed.
+
+## Security configuration
+
+`vercel.json` configures CSP, anti-framing, MIME sniffing protection, referrer and permissions policies for Vercel. The static Python preview does not apply these HTTP headers. The CSP allows inline styles for the existing Tailwind browser runtime and jQuery UI, but restricts scripts to this origin and blocks outbound connections, form submissions, embedding and plugins. The same header policy was checked in a local static preview before publishing. These headers do not remove a Google Safe Browsing classification; investigate Search Console Security Issues and request review after addressing the reported cause.
