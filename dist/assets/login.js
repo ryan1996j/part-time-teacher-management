@@ -1,16 +1,10 @@
-/* Click-through UI preview. Input values are never read or validated. */
+/* Fictional demo role selection. No credentials are requested or processed. */
 $(function(){
-  let role='admin';
-  $('[data-demo]').on('click',function(){role=$(this).data('demo')==='teacher'?'teacher':'admin';$('#credential-hint').text('Selected demo role: '+(role==='admin'?'Admin':'Teacher'));});
-  $('#captcha-image').text('DEMO');
-  $('#show-password').on('click',function(){const show=$('#password').attr('type')==='password';$('#password').attr('type',show?'text':'password');$(this).text(show?'Hide':'Show');});
-  $('#login-form').on('submit',function(ev){
-    ev.preventDefault();
-    try{sessionStorage.setItem('ai14-demo-session',JSON.stringify({role:role,teacherId:role==='teacher'?'T001':null,name:role==='admin'?'School Admin':'Aye Aye Win',verified:true,at:new Date().toISOString()}));}
-    catch{$('#login-error').text('Allow session storage to explore the demo.').removeClass('hidden');return;}
-    $('#password,#email,#captcha-input').val('');
-    location.replace('index.html#'+(role==='admin'?'overview':'home'));
+  const roles={admin:{name:'School Admin',teacherId:null,page:'overview'},teacher:{name:'Aye Aye Win',teacherId:'T001',page:'home'}};
+  $('[data-demo]').on('click',function(){
+    const role=$(this).data('demo'),choice=roles[role];if(!choice)return;
+    try{sessionStorage.setItem('ai14-demo-session',JSON.stringify({role:role,teacherId:choice.teacherId,name:choice.name,verified:true,at:new Date().toISOString()}));}
+    catch{$('#entry-error').text('Allow browser session storage to explore this demo.');return;}
+    location.replace('index.html#'+choice.page);
   });
-  $('#forgot').on('click',function(){$('#login-view').addClass('hidden');$('#recovery-view').removeClass('hidden');});
-  $('[data-back]').on('click',function(){$('#recovery-view,#otp-view').addClass('hidden');$('#login-view').removeClass('hidden');});
 });

@@ -6,12 +6,12 @@ Approved PRD v0.3 implemented as a browser-only interactive prototype using **HT
 
 Serve `dist` with a static web server so sign-in and the workspace share the same browser origin. On this Windows machine, double-click `start-preview.cmd`, then open `http://127.0.0.1:4173/`. Alternatively run `python -m http.server 4173 --bind 127.0.0.1 --directory dist` from the project folder. This server serves static files only; it contains no application backend or database. Tailwind and jQuery are included locally; no external services or build step are needed.
 
-The entry page uses the original login layout as a click-through demo. Select Admin or Teacher (default Admin), then click **Enter demo workspace**. All input fields can be empty or contain arbitrary text; values are not read, validated or transmitted. CAPTCHA is decorative and there is no OTP step. Old preview URLs redirect to `login.html`.
+The entry page clearly identifies this as a fictional product demo. Choose **Enter Admin Demo** or **Enter Teacher Demo** to open the respective workspace. No login form, password, CAPTCHA or OTP is requested. Old preview URLs redirect to `login.html`.
 
 ## Explore
 
 - Admin: Overview → Verification → review corrections → Class records → verify completed sessions → Payroll → calculate 12–18 October 2026 → inspect/adjust → approve → Payment history → record a fictional payment.
-- Teacher: select Choose demo role, select Teacher demo, then Enter demo workspace. Check in/out of assigned classes, view personal class records, submit corrections and see approved payments.
+- Teacher: select Choose demo role, then Enter Teacher Demo. Check in/out of assigned classes, view personal class records, submit corrections and see approved payments.
 - Teachers: add demo profiles, add hourly rate versions and activate/deactivate profiles.
 - Classes: add subjects and edit teacher assignments.
 - Activity log: inspect the history of demo changes.
@@ -22,7 +22,7 @@ Workspace changes persist only in this browser's localStorage. Demo role state u
 ## Files
 
 - `dist/index.html`: application shell and dialog container.
-- `dist/login.html`: original login appearance with click-through demo entry.
+- `dist/login.html`: fictional demo workspace selector.
 - `dist/assets/login.js`: browser-only demo role selection.
 - `dist/assets/app.js` handles demo session routing when the workspace starts; there is no separate auth-guard script.
 - `dist/assets/styles.css`: responsive visual design.
@@ -44,9 +44,9 @@ Prototype policy controls are intentionally simpler than production: class assig
 
 [SayaSync live website](https://part-time-teacher-management.vercel.app/)
 
-[Open the demo login](https://part-time-teacher-management.vercel.app/login.html)
+[Choose an Admin or Teacher demo workspace](https://part-time-teacher-management.vercel.app/login.html)
 
-The stable production domain stays the same when a new version is deployed.
+The final demo opens without email, password, CAPTCHA or OTP. The stable Vercel production URL stays the same across deployments.
 
 ## Security configuration
 
