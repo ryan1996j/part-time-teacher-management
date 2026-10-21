@@ -42,9 +42,7 @@ Prototype policy controls are intentionally simpler than production: class assig
 
 ## Live website
 
-[SayaSync live website](https://part-time-teacher-management.vercel.app/)
-
-[Choose an Admin or Teacher demo workspace](https://part-time-teacher-management.vercel.app/login.html)
+https://sayasync.netlify.app/login.html
 
 The final demo opens without email, password, CAPTCHA or OTP. The stable Vercel production URL stays the same across deployments.
 
