@@ -41,3 +41,6 @@ button[data-action="calculate"],button[data-action="calculate"]:focus,button[dat
 /* Show the hamburger only while navigation is closed. */
 @media(min-width:901px){body:not(.sidebar-collapsed) #menu-toggle{display:none}}
 @media(max-width:900px){body:has(#sidebar.open) #menu-toggle{display:none}}
+
+/* Compact sidebar brand for local design approval. */
+#sidebar .brand{gap:9px;padding:0 8px;font-size:17px;line-height:1.2;letter-spacing:-.3px;min-height:38px}#sidebar .brand-logo{width:48px;height:32px;padding:3px;border-radius:6px}#sidebar .brand>span{min-width:0}#sidebar .brand small{font-size:7px;letter-spacing:1.2px;font-weight:500;line-height:1.5;margin-top:4px}

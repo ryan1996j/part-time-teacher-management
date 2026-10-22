@@ -42,9 +42,9 @@ Prototype policy controls are intentionally simpler than production: class assig
 
 ## Live website
 
-https://sayasync.netlify.app/login.html
+[SayaSync live demo](https://sayasync.netlify.app/login.html)
 
-The final demo opens without email, password, CAPTCHA or OTP. The stable Vercel production URL stays the same across deployments.
+The final demo opens without email, password, CAPTCHA or OTP. The live demo is hosted on Netlify at the link above.
 
 ## Security configuration
 
