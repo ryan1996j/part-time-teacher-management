@@ -24,7 +24,7 @@ Workspace changes persist only in this browser's localStorage. Demo role state u
 - `dist/index.html`: application shell and dialog container.
 - `dist/login.html`: fictional demo workspace selector.
 - `dist/assets/login.js`: browser-only demo role selection.
-- `dist/assets/app.js` handles demo session routing when the workspace starts; there is no separate auth-guard script.
+- `dist/assets/auth-guard.js`: browser-only demo session routing; not production access control.
 - `dist/assets/styles.css`: responsive visual design.
 - `dist/assets/tailwind-browser.js`: vendored Tailwind browser runtime v4.1.18.
 - `dist/assets/jquery.min.js`: vendored jQuery v3.7.1, retaining its license header.
@@ -44,8 +44,12 @@ Prototype policy controls are intentionally simpler than production: class assig
 
 [SayaSync live demo](https://sayasync.netlify.app/login.html)
 
-The final demo opens without email, password, CAPTCHA or OTP. The live demo is hosted on Netlify at the link above.
+The final demo opens without email, password, CAPTCHA or OTP. The updated prototype is hosted on Netlify at the same stable URL. Choose Enter Admin Demo or Enter Teacher Demo.
 
 ## Security configuration
 
 `vercel.json` configures CSP, anti-framing, MIME sniffing protection, referrer and permissions policies for Vercel. The static Python preview does not apply these HTTP headers. The CSP allows inline styles for the existing Tailwind browser runtime and jQuery UI, but restricts scripts to this origin and blocks outbound connections, form submissions, embedding and plugins. The same header policy was checked in a local static preview before publishing. These headers do not remove a Google Safe Browsing classification; investigate Search Console Security Issues and request review after addressing the reported cause.
+
+## Updated prototype
+
+Includes revised navigation, review inbox, payroll flows, date picker and accessibility refinements. All data remains fictional and browser-local; no Supabase backend is connected. Legacy preview URLs redirect without inline scripts. Netlify production entry: [SayaSync demo](https://sayasync.netlify.app/login.html).

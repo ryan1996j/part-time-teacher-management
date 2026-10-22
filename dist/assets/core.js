@@ -24,10 +24,22 @@
     pending(s){return this.data.corrections.some(c=>c.session===s.id&&c.status==='Pending');}
     locked(s){return this.data.runs.some(r=>r.status==='Approved'&&r.lines.some(l=>l.session===s.id));}
     reason(s){if(!s.end)return 'Missing checkout';if(mins(s.start,s.end)<=0)return 'Invalid duration';if(this.pending(s))return 'Pending correction';if(s.flag)return s.flag;if(s.status!=='Verified')return s.status==='Rejected'?'Rejected session':'Awaiting verification';if(this.rate(s)===null)return 'Missing hourly rate';if(this.locked(s))return 'Already in approved payroll';return '';}
+    checkInBlocker(teacher,now=new Date().toISOString()){
+      return this.data.sessions.filter(s=>s.teacher===teacher&&!s.end).sort((a,b)=>new Date(b.start)-new Date(a.start)).find(s=>{
+        const c=this.data.corrections.find(c=>c.session===s.id&&c.status==='Pending');
+        return !(c&&Number.isFinite(Date.parse(c.start))&&Number.isFinite(Date.parse(c.end))&&new Date(c.end)>new Date(c.start)&&new Date(c.end)<=new Date(now));
+      })||null;
+    }
+    overlaps(s,start,end){return this.data.sessions.some(other=>{
+      if(other.id===s.id||other.teacher!==s.teacher)return false;
+      const c=this.data.corrections.find(c=>c.session===other.id&&c.status==='Pending'),from=c?.start||other.start,to=c?.end||other.end;
+      return new Date(start)<(to?new Date(to):Infinity)&&new Date(end)>new Date(from);
+    });}
     checkIn(teacher,classId,now=new Date().toISOString()){
       const t=this.teacher(teacher);if(!t.active)throw Error('This teacher account is inactive.');
       if(!t.assignments.includes(classId)||!this.data.classes.some(c=>c.id===classId&&c.active))throw Error('Choose an active assigned class.');
-      if(this.data.sessions.some(s=>s.teacher===teacher&&!s.end))throw Error('You have an open session. Check out or request a correction first.');
+      if(this.checkInBlocker(teacher,now))throw Error('You have an open session. Check out or submit its actual end time as a correction first.');
+      if(this.overlaps({id:null,teacher},now,new Date(new Date(now).getTime()+1).toISOString()))throw Error('Check-in overlaps a recorded or requested class time. Review your class records first.');
       const s={id:this.id('S'),teacher,classId,start:now,end:null,originalStart:now,originalEnd:null,status:'Pending',source:'Teacher check-in',version:1,note:'',flag:''};
       this.data.sessions.push(s);this.log('Checked in',s.id+' · '+classId,t.name);return s;
     }
@@ -49,6 +61,7 @@
       const s=this.session(id);if(this.locked(s))throw Error('This session is locked in approved payroll. Contact Admin for an adjustment.');
       if(this.pending(s))throw Error('There is already a pending correction.');
       if(!reason.trim())throw Error('Please explain the correction.');if(!start||!end||mins(start,end)<=0)throw Error('End date/time must be after start date/time.');
+      if(this.overlaps(s,start,end))throw Error('The corrected times overlap another class. Check the start and end times.');
       const c={id:this.id('CR'),session:id,start,end,reason,status:'Pending',comment:'',baseVersion:s.version};this.data.corrections.push(c);this.log('Correction requested',id+' · '+reason,this.teacher(s.teacher).name);return c;
     }
     review(id,decision,comment){
@@ -56,6 +69,7 @@
       const s=this.session(c.session);if(this.locked(s))throw Error('Session is locked in approved payroll.');
       if(c.baseVersion!==s.version)throw Error('Session changed. Refresh and review the latest version.');
       if(decision==='Rejected'&&!comment.trim())throw Error('A rejection reason is required.');
+      if(decision==='Approved'&&this.overlaps(s,c.start,c.end))throw Error('The corrected times overlap another class. Reject this request so the teacher can submit corrected times.');
       c.status=decision;c.comment=comment;
       if(decision==='Approved'){s.start=c.start;s.end=c.end;s.status='Pending';s.version++;s.flag=mins(s.start,s.end)>360?'Long duration — review required':'';}
       this.log('Correction '+decision.toLowerCase(),c.session+' · '+(comment||c.reason));
