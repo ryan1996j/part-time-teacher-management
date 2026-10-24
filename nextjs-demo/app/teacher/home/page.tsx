@@ -1,2 +1,2 @@
-import LegacyPreview from '../../../components/LegacyPreview';
-export default function Page(){return <LegacyPreview role="teacher" page="home"/>}
+import TeacherPortal from '../../../components/workspace/TeacherPortal';
+export default function Page(){return <TeacherPortal page="home"/>}

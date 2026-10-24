@@ -1,0 +1,1 @@
+export default function WorkspaceStyles(){return <>{['styles.css','responsive.css','jquery-ui.min.css','controls.css','theme-blue.css','refinements-v03.css','typography-accessibility.css','flows.css','live-review.css'].map(file=><link key={file} rel="stylesheet" href={'/legacy/assets/'+file}/>)}</>}

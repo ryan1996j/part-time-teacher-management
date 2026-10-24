@@ -2,7 +2,7 @@
 import {useState, type FormEvent} from 'react';
 import {useRouter} from 'next/navigation';
 import Link from 'next/link';
-import {createDemoSession, demoDestination, DEMO_SESSION_KEY, type DemoRole} from '../lib/demo-session';
+import {signIn} from '../app/auth/actions';
 
 export default function DemoEntry({initialMode='login'}:{initialMode?:'login'|'signup'}) {
   const router=useRouter();
@@ -10,17 +10,20 @@ export default function DemoEntry({initialMode='login'}:{initialMode?:'login'|'s
   const signup=initialMode==='signup';
   const [signupComplete,setSignupComplete]=useState(false);
   function submitSignup(event:FormEvent<HTMLFormElement>){event.preventDefault();setError('');const form=event.currentTarget;if(!form.reportValidity())return;const data=new FormData(form);if(data.get('password')!==data.get('confirmPassword')){setError('Passwords do not match.');form.querySelector<HTMLInputElement>('#confirm-password')?.focus();return;}form.reset();setShowPassword(false);setSignupComplete(true);}
-  const [role,setRole]=useState<DemoRole>('admin');
+  const [busy,setBusy]=useState(false);
   const [showPassword,setShowPassword]=useState(false);
   const [recovery,setRecovery]=useState(false);
-  function submit(event: FormEvent<HTMLFormElement>){event.preventDefault();event.currentTarget.reset();enter(role);}
-  function enter(role: DemoRole) {
-    try { sessionStorage.setItem(DEMO_SESSION_KEY,JSON.stringify(createDemoSession(role))); }
-    catch {setError('Browser session storage is unavailable. Enable it to explore the demo.');return;}
-    router.replace(demoDestination(role));
+  async function submit(event: FormEvent<HTMLFormElement>){
+    event.preventDefault();if(busy)return;const form=event.currentTarget;
+    if(!form.reportValidity())return;setBusy(true);setError('');
+    try{const result=await signIn(new FormData(form));
+      if('error' in result){setError(result.error);return;}
+      form.reset();router.replace(result.destination);router.refresh();
+    }catch{setError('Unable to sign in. Please try again.');}
+    finally{setBusy(false);}
   }
   return <div className="login-page native-demo-entry">
-    <a className="skip-link" href="#demo-entry">Skip to demo choices</a>
+    <a className="skip-link" href="#demo-entry">Skip to sign in</a>
     <div className="layout">
       <aside className="story" aria-label="Saya-Sync">
         <a className="brand" href="/login" aria-label="Saya-Sync home"><img className="primary-logo" src="/legacy/assets/saya-sync.svg" alt="Saya-Sync" /></a>
@@ -42,14 +45,14 @@ export default function DemoEntry({initialMode='login'}:{initialMode?:'login'|'s
             <p id="signup-note" className="auth-demo-note">Local UI demo only. Use fictional details and a sample password. Nothing is saved or sent. No Admin role can be selected during sign up.</p>
           </> : recovery ? <div className="login-recovery"><p>This local preview does not send password reset emails. Production recovery will use Supabase Auth.</p><button type="button" className="primary" onClick={()=>setRecovery(false)}>Back to sign in</button></div> : <>
             <form onSubmit={submit} noValidate aria-describedby="preview-note">
-              <label htmlFor="email"><span>Email address</span><input id="email" name="email" type="email" autoComplete="off" placeholder="you@example.com" /></label>
-              <label htmlFor="password"><span>Password</span><div className="input-wrap"><input id="password" name="password" type={showPassword?'text':'password'} autoComplete="off" placeholder="Enter your password" /><button type="button" className="show" aria-label={showPassword?'Hide password':'Show password'} aria-pressed={showPassword} onClick={()=>setShowPassword(!showPassword)}>{showPassword?'Hide':'Show'}</button></div></label>
+              <label htmlFor="email"><span>Email address</span><input id="email" name="email" type="email" autoComplete="username" required maxLength={254} placeholder="you@example.com" /></label>
+              <label htmlFor="password"><span>Password</span><div className="input-wrap"><input id="password" name="password" type={showPassword?'text':'password'} autoComplete="current-password" required maxLength={1024} placeholder="Enter your password" /><button type="button" className="show" aria-label={showPassword?'Hide password':'Show password'} aria-pressed={showPassword} onClick={()=>setShowPassword(!showPassword)}>{showPassword?'Hide':'Show'}</button></div></label>
               <p className="field-error" id="entry-error" role="alert">{error}</p>
-              <button className="primary" type="submit">Sign in <span aria-hidden="true">→</span></button>
+              <button className="primary" type="submit" disabled={busy}>{busy?'Signing in…':'Sign in'} <span aria-hidden="true">→</span></button>
             </form>
             <button type="button" className="recovery-link" onClick={()=>setRecovery(true)}>Forgot password?</button>
             <p className="auth-switch">Need access? <Link href="/signup">Sign up</Link></p>
-            <div className="preview-controls"><p id="preview-note">Local UI preview only. Do not enter real credentials. Inputs are not checked, stored or sent. Select a demo role, then Sign in.</p><div className="preview-roles" role="group" aria-label="Demo role"><button type="button" aria-pressed={role==='admin'} onClick={()=>setRole('admin')}>Admin demo</button><button type="button" aria-pressed={role==='teacher'} onClick={()=>setRole('teacher')}>Teacher demo</button></div></div>
+            <div className="preview-controls"><p id="preview-note">Development sign-in uses Supabase Auth. Your school administrator assigns your role. Workspace teaching and payment records remain fictional demo data.</p></div>
           </> }
         </div>
       </main>

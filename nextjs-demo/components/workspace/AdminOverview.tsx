@@ -5,7 +5,6 @@ import {useRouter} from 'next/navigation';
 import Core from '../../lib/demo-core.cjs';
 import Flow from '../../lib/demo-flow.cjs';
 import type {DemoStore,DemoData,Session,Teacher} from '../../lib/demo-types';
-import {DEMO_SESSION_KEY} from '../../lib/demo-session';
 import SelectField from './SelectField';
 import AppShell from './AppShell';import Dialog from './Dialog';import {Icon,Button,Badge,StatCard} from './Ui';
 const KEY='ai14-blue-ui-v03';
@@ -15,7 +14,7 @@ const day=(s:string)=>new Date(s).toLocaleDateString('en-GB',{timeZone:'Asia/Yan
 function Person({teacher:t}:{teacher:Teacher}){return <div className="person"><span aria-hidden="true" className={'avatar tone-'+t.tone%5}>{t.name.split(' ').map(n=>n[0]).slice(0,2).join('')}</span><div><strong>{t.name}</strong><small>{t.id}</small></div></div>}
 export default function AdminOverview(){
  const router=useRouter();const [store,setStore]=useState<DemoStore|null>(null);const [modal,setModal]=useState<'add'|'detail'|'reset'|null>(null);const [sessionId,setSessionId]=useState('');const [error,setError]=useState('');const [toast,setToast]=useState('');const [dirty,setDirty]=useState(false);const [discard,setDiscard]=useState(false);const [teacherId,setTeacherId]=useState('');const [classId,setClassId]=useState('');const timer=useRef<ReturnType<typeof setTimeout>|null>(null);
- useEffect(()=>{let auth;try{auth=JSON.parse(sessionStorage.getItem(DEMO_SESSION_KEY)||'null')}catch{}if(!auth?.verified||!['admin','teacher'].includes(auth.role)){router.replace('/login');return}if(auth.role==='teacher'){router.replace('/teacher/home');return}let data;try{data=JSON.parse(localStorage.getItem(KEY)||'null')}catch{}setStore(new Core.Store(data?.schema===1?data:null));return()=>{if(timer.current)clearTimeout(timer.current)}},[router]);
+ useEffect(()=>{let data;try{data=JSON.parse(localStorage.getItem(KEY)||'null')}catch{}setStore(new Core.Store(data?.schema===1?data:null));return()=>{if(timer.current)clearTimeout(timer.current)}},[router]);
  useEffect(()=>{const warn=(event:BeforeUnloadEvent)=>{if(dirty){event.preventDefault();event.returnValue=''}};window.addEventListener('beforeunload',warn);return()=>window.removeEventListener('beforeunload',warn)},[dirty]);
  function notify(message:string){setToast(message);if(timer.current)clearTimeout(timer.current);timer.current=setTimeout(()=>setToast(''),3500)}
  function save(next:DemoStore){setStore(next);try{localStorage.setItem(KEY,JSON.stringify(next.data));return true}catch{notify('Browser storage is unavailable. Changes last for this tab only.');return false}}
