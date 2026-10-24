@@ -1,5 +1,11 @@
 # SayaSync · Part-Time Teacher Management
 
+## Current live demo
+
+[SayaSync on Netlify](https://sayasync.netlify.app/login.html)
+
+The Next.js migration demo, including Sign in and Sign up, is in the nextjs-demo folder on this branch. It has not been deployed; the link above opens the existing static prototype.
+
 Approved PRD v0.3 implemented as a browser-only interactive prototype using **HTML, Tailwind CSS and jQuery**. No backend, API, database, real authentication, account invitation or payment processing is included.
 
 ## Open
