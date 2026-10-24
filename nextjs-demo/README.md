@@ -24,4 +24,4 @@ node --test scripts/demo-session.test.mjs
 npm run build
 ```
 
-This folder is separate from the existing static website. Publishing this migration branch does not deploy the Next.js demo. Existing live URL: https://sayasync.netlify.app/login.html
+Live demo: [Sign in](https://sayasync.netlify.app/login) · [Sign up](https://sayasync.netlify.app/signup). Netlify builds this directory using the Next.js runtime. The original static prototype remains in the repository for reference.
