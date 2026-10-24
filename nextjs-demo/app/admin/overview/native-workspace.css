@@ -1,0 +1,4 @@
+body:has(#shell){overflow:auto}.flex{display:flex}.items-center{align-items:center}.justify-between{justify-content:space-between}.gap-2{gap:.5rem}.gap-3{gap:.75rem}
+#session-form .field select{appearance:auto;min-height:46px;border:1px solid #7c8a9a;background:#fff;color:#0f172a;font:inherit}#modal .form-error{margin:16px 0 0}
+
+.react-select{position:relative}.react-select>.ui-selectmenu-button{width:100%;text-align:left}.react-select-options{position:absolute;top:100%;left:0;right:0;z-index:120;margin:0;padding:4px;list-style:none;max-height:220px;overflow:auto}.react-select-options .ui-menu-item-wrapper{cursor:pointer}

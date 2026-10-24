@@ -1,0 +1,25 @@
+/* Task-oriented navigation and next actions. Keeps the compact typography scale. */
+#nav{margin-top:20px}.nav-group+.nav-group{margin-top:18px}
+.nav-group-label{font-size:.6875rem;line-height:1.5;letter-spacing:.09em;text-transform:uppercase;color:#D4E9FA;margin:0 13px 7px}
+.nav-link>span:not(.count){min-width:0;flex:1}.nav-link .count{flex-shrink:0}
+.section-switch{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 20px}
+.section-switch .btn{white-space:normal;text-align:center}
+.record-note{display:block;color:#475569;font-size:.75rem;line-height:1.7;margin:6px 0}
+.row-actions{align-items:center;flex-wrap:wrap;gap:8px;min-width:140px}
+.next-step{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:18px 0}
+.empty-action{display:flex;justify-content:center;margin:0 auto 24px;width:max-content;max-width:100%}
+.inline-filter{display:flex;align-items:center;gap:10px;font-size:.8125rem;min-width:0}
+.assignment-picker{border:1px solid #CBD5E1;border-radius:10px;padding:14px 16px;margin:8px 0 20px}
+.assignment-picker legend{font-size:.875rem;font-weight:700;color:#334155;padding:0 6px}
+.assignment-picker label{display:flex;align-items:center;gap:10px;min-height:40px;font-size:.875rem;line-height:1.6}
+.assignment-picker input[type="checkbox"]{width:20px;height:20px;min-height:20px;accent-color:#0077CC;flex-shrink:0}
+.payment-reversal{padding:14px 16px;margin:16px 0;background:#F1F5F9;border-radius:8px;color:#334155;font-size:.875rem}
+.payment-reversal p{margin:8px 0 0;font-size:.8125rem;line-height:1.7}
+#modal-error>.form-actions{padding-top:8px;margin:0;justify-content:flex-start}
+#modal-error p{margin:0 0 8px}
+#main .teacher-card .card-actions{gap:10px}
+@media(max-width:680px){
+  .section-switch .btn{flex:1 1 100%}.inline-filter{flex-wrap:wrap;width:100%}
+  .inline-filter .ui-selectmenu-button{min-width:0;max-width:100%}
+  .row-actions{min-width:120px}.assignment-picker{padding:12px}
+}
