@@ -46,3 +46,9 @@ Configure `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` 
 ## Original prototype
 
 `dist` and `nextjs-demo/public/legacy` retain the earlier prototype. Unmigrated finance screens still contain fictional data. The real Admin Overview no longer reads fictional browser-storage totals.
+
+## Payroll and payments development branch
+
+Branch `backend/payroll-payments-2026-10-26` backs up the latest local payroll drafts, signed adjustments, approval/locking, manual full-payment recording and Teacher My payments views. This branch is not a production deployment; the live link above still serves the previous published release. No money transfers are implemented. Reversal and Void workflows remain pending.
+
+Migrations 008–010 were applied manually to the approved development database. Reconcile migration history before any automated migration deployment; do not replay blindly. Build/TypeScript, frozen-asset baseline, protected-route checks and rollback SQL integration tests passed during local acceptance. Admin and Teacher empty payment views were manually verified; positive payment views were tested with rollback database fixtures, not real owner payments.

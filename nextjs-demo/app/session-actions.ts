@@ -45,7 +45,7 @@ export async function captureTeaching(command:string,input:Record<string,unknown
   }
   const client=await createClient();const result=await client.rpc('capture_teaching_session',{p_school:access.schoolId,p_request:requestId,p_command:command,p_payload:payload});
   if(result.error){
-   const allowed=['You already have an open teaching record','Select an active class assigned to your account','Teacher must have an active assignment at the teaching start time','Enter completed teaching times (at least one minute) and a reason','Teaching record changed. Refresh before checking out.'];
+   const allowed=['This class record is locked by approved payroll','You already have an open teaching record','Select an active class assigned to your account','Teacher must have an active assignment at the teaching start time','Enter completed teaching times (at least one minute) and a reason','Teaching record changed. Refresh before checking out.'];
    if(allowed.includes(result.error.message))return {error:result.error.message};
    if(result.error.code==='23505')return {error:'This record already exists, or you already have an open class. Refresh your records.'};
    return {error:'Unable to save this teaching record. Refresh and check your access and values.'};

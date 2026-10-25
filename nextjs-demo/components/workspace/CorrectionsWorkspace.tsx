@@ -29,7 +29,7 @@ export default function CorrectionsWorkspace({initial}:{initial:CorrectionData})
  return <><AppShell role={data.role} profile={data.teacher||undefined} activePage={data.role==='admin'?'reviews':'corrections'} reviewCount={0}>
   <section className="page-head"><div><div className="eyebrow">{data.role==='admin'?'REVIEW & VERIFY':'TEACHER WORKSPACE'}</div><h1>{data.role==='admin'?'Review inbox':'My corrections'}</h1><p className="subtext">Review requested time changes while preserving original records.</p></div></section>
   {data.role==='admin'&&<div className="toolbar"><Link className="btn primary" href="/admin/reviews">Corrections</Link><Link className="btn" href="/admin/reviews?view=sessions">Class verification</Link></div>}
-  <p className="record-note">Real development records. Correction approval and class verification are separate decisions. Payroll remains a prototype.</p>
+  <p className="record-note">Real development records. Correction approval and class verification are separate decisions. Payroll approval and payments are not connected yet.</p>
   {error&&!selected&&<p className="form-error" role="alert">{error}</p>}
   <section className="card"><div className="card-head"><h2>Correction requests</h2><Button kind="small" disabled={loading||busy} onClick={()=>void load()}>{loading?'Refreshing…':'Refresh requests'}</Button></div>
    <div className="toolbar"><SelectField label="Status" name="status" value={data.filter} options={[{id:'',name:'All statuses'},...['Pending','Approved','Rejected','Withdrawn'].map(id=>({id,name:id}))]} onChange={value=>void load(1,value)}/></div>
