@@ -52,7 +52,7 @@ export default function DemoEntry({initialMode='login'}:{initialMode?:'login'|'s
             </form>
             <button type="button" className="recovery-link" onClick={()=>setRecovery(true)}>Forgot password?</button>
             <p className="auth-switch">Need access? <Link href="/signup">Sign up</Link></p>
-            <div className="preview-controls"><p id="preview-note">Development sign-in uses Supabase Auth. Your school administrator assigns your role. Workspace teaching and payment records remain fictional demo data.</p></div>
+            <div className="preview-controls"><p id="preview-note">Development sign-in uses Supabase Auth. Your school administrator assigns your role. Teaching records use the development database. Corrections and verification use the development database. Payroll is still being connected.</p></div>
           </> }
         </div>
       </main>

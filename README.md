@@ -1,41 +1,48 @@
 # SayaSync · Part-Time Teacher Management
 
-## Live demo
+## Live application
 
 - [Sign in](https://sayasync.netlify.app/login)
-- [Sign up](https://sayasync.netlify.app/signup)
+- [Admin overview](https://sayasync.netlify.app/admin/overview) — requires an authorized Admin account.
+- [Teacher workspace](https://sayasync.netlify.app/teacher/home) — requires an authorized linked Teacher account.
 
-The Next.js UI demo is deployed on Netlify. The old /login.html URL redirects to /login.
+The Netlify deployment uses Next.js and Supabase Auth. Public self-registration is disabled; the school administrator manages access. The earlier `/login.html` URL redirects to `/login`.
 
-This is a browser-only prototype, not production authentication. Use fictional details only. Sign-in opens the selected Admin/Teacher demo workspace; sign-up validates fields and shows a completion message without creating an account, sending email, or granting access. Supabase is not connected.
+## Current functionality
 
-## Current application
+Database-backed features: role-protected login/logout, Teachers, Classes and dated assignments, rate history, teacher check-in/out, completed Admin entries, correction requests, Admin correction review, separate session verification, immutable original timestamps and audit history, and real Admin Overview counts/activity/recent records.
 
-The Next.js project is in nextjs-demo. Sign in, Sign up and Admin Overview use native React. Other workspace pages preserve the approved prototype through an isolated legacy preview. Business workflows remain teacher records, verification, corrections, payroll calculation and fictional payment history.
+Payroll, payment processing and the legacy Activity log are not connected to real financial workflows yet. Overview payroll figures show unavailable placeholders. Recorded teaching activity includes unverified/rejected completed records and must not be treated as payable time.
+
+This release connects the existing development backend. It is a development pilot, not a completed payroll product. No payment transfers occur.
+
+## Local development
 
 ```powershell
 cd nextjs-demo
 npm ci
+# Configure public Supabase URL and publishable key locally (never commit .env.local).
 npm run dev
 ```
 
-Open http://127.0.0.1:3001/login.
+Default development URL: http://127.0.0.1:3001/login. The existing local acceptance server may use port 3002.
 
 ## Validation
 
 ```powershell
+npm run build
 npm run typecheck
 npm run verify:baseline
-node --test scripts/demo-session.test.mjs
-npm run build
 ```
+
+Database integration tests in `nextjs-demo/supabase/tests` use disposable rollback fixtures. Never replay migrations blindly: development schema was applied manually and CLI migration history needs reconciliation.
 
 ## Netlify deployment
 
-Production branch: main. Base directory: nextjs-demo. Build command: npm run build. Publish directory: .next. Node.js: 24. Enable the Next.js runtime; publishing raw .next output without its adapter causes missing routes. netlify.toml records the build configuration and Next.js plugin.
+Production URL: https://sayasync.netlify.app/login. Repository: ryan1996j/part-time-teacher-management. Base: `nextjs-demo`; build: `npm run build`; publish: `.next`; Node 24; Next.js adapter configured in `netlify.toml`.
+
+Configure `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` in Netlify's build/runtime environment. Never add a Supabase service-role key to frontend configuration or source control. Existing RLS and server-side role/membership checks protect school data. Deploying application code does not apply SQL migrations or modify Supabase Auth redirect settings.
 
 ## Original prototype
 
-The dist folder retains the earlier HTML, Tailwind CSS and jQuery prototype. Its unchanged assets are also retained in nextjs-demo/public/legacy. It is not the current Netlify publish directory.
-
-Fictional workspace records persist in browser storage. Demo roles are client-side simulation and do not enforce production access permissions. No real payroll transfers occur.
+`dist` and `nextjs-demo/public/legacy` retain the earlier prototype. Unmigrated finance screens still contain fictional data. The real Admin Overview no longer reads fictional browser-storage totals.

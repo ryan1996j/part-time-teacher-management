@@ -58,6 +58,7 @@ export async function saveMasterData(command:string,input:Record<string,unknown>
     const client=await createClient();const result=await client.rpc('manage_master_data',{p_school:schoolId,p_request:requestId,p_command:command,p_payload:payload});
     if(result.error){
       const code=result.error.code;
+      if(result.error.message==='Resolve open teaching records before deactivating this record')return {error:result.error.message};
       if(code==='23505')return {error:'This email or effective rate date already exists.'};
       if(code==='40001')return {error:'Record changed. Close this form, reload the page and try again.'};
       if(code==='42501')return {error:'Administrator access is required.'};
