@@ -11,7 +11,7 @@ export default function LegacyPreview({role,page}:{role?:'admin'|'teacher';page?
    const params=new URLSearchParams(window.location.search),filter=new URLSearchParams();
    for(const key of ['status','view','tab','run']){const value=params.get(key);if(value)filter.set(key,value)}
    if(filter.size)win.location.hash=page+'?'+filter.toString();
-   win.addEventListener('hashchange',()=>{const target=win.location.hash.slice(1).split('?')[0];if(role==='admin'&&['overview','teachers','classes','sessions','reviews','payroll','payments'].includes(target))router.replace('/admin/'+target)});
+   win.addEventListener('hashchange',()=>{const target=win.location.hash.slice(1).split('?')[0];if(role==='admin'&&['overview','teachers','classes','sessions','reviews','payroll','payments','reports'].includes(target))router.replace('/admin/'+target)});
    const action=params.get('action'),id=params.get('id')||'';
    if(action&&['session-detail','request','verify','review','add-session'].includes(action)){
     win.requestAnimationFrame(()=>{const button=win.document.createElement('button');button.dataset.action=action;button.dataset.id=id;button.hidden=true;win.document.body.appendChild(button);button.click();button.remove()});

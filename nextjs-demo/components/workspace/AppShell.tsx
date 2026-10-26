@@ -3,7 +3,7 @@ import {useState,useEffect,useRef,type ReactNode} from 'react';
 import Link from 'next/link';
 import {logoutWorkspace} from '../../lib/logout-workspace';
 import {Icon} from './Ui';
-const adminGroups:[string,[string,string][]][]=[['Teaching',[['overview','Overview'],['sessions','Class records'],['reviews','Review inbox']]],['Finance',[['payroll','Payroll'],['payments','Payments']]],['Manage',[['teachers','Teachers'],['classes','Classes & assignments'],['audit','Activity log']]]];
+const adminGroups:[string,[string,string][]][]=[['Teaching',[['overview','Overview'],['sessions','Class records'],['reviews','Review inbox']]],['Finance',[['payroll','Payroll'],['payments','Payments'],['reports','Reports']]],['Manage',[['teachers','Teachers'],['classes','Classes & assignments'],['audit','Activity log']]]];
 export default function AppShell({children,reviewCount,onReset,activePage='overview',role='admin',profile}:{children:ReactNode;reviewCount:number;onReset?:()=>void;activePage?:string;role?:'admin'|'teacher';profile?:{name:string;code:number}}){
  const groups:[string,[string,string][]][]=role==='teacher'?[['My teaching',[['home','Today & check-in'],['sessions','My class records'],['corrections','My corrections']]],['My pay',[['payments','My payments']]]]:adminGroups;
  const [open,setOpen]=useState(false);const [narrow,setNarrow]=useState(false);const aside=useRef<HTMLElement>(null),close=useRef<HTMLButtonElement>(null),toggle=useRef<HTMLButtonElement>(null);const wasOpen=useRef(false);
