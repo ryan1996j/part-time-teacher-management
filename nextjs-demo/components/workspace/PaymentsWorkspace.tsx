@@ -1,0 +1,28 @@
+'use client';
+import {useEffect,useRef,useState} from 'react';
+import Link from 'next/link';
+import {readPayments} from '../../app/payment-actions';
+import type {PaymentData,PaymentSummary} from '../../lib/payment-types';
+import {draftCode,moneyText} from '../../lib/payroll-types';
+import {teacherCode} from '../../lib/master-data';
+import AppShell from './AppShell';
+import PaymentDialog from './PaymentDialog';
+import SelectField from './SelectField';
+import {Button,Badge,Icon} from './Ui';
+export default function PaymentsWorkspace({initial}:{initial:PaymentData}){
+ const [data,setData]=useState(initial),[loading,setLoading]=useState(false),[error,setError]=useState(''),[selected,setSelected]=useState<PaymentSummary|null>(null),[recording,setRecording]=useState(false),[notice,setNotice]=useState('');
+ useEffect(()=>()=>{if(timer.current)clearTimeout(timer.current)},[]);
+ const reads=useRef(0),timer=useRef<ReturnType<typeof setTimeout>|null>(null);
+ async function load(page=data.page,status=data.status,teacher=data.teacherFilter){const id=++reads.current;setLoading(true);try{const next=await readPayments({page,status,teacher});if(id===reads.current){setData(next);setError('')}}catch{if(id===reads.current)setError('Unable to refresh payments. Showing last successful data; please retry.')}finally{if(id===reads.current)setLoading(false)}}
+ return <><AppShell role={data.role} profile={data.teacher||undefined} activePage="payments" reviewCount={0}>
+  <section className="page-head"><div><div className="eyebrow">{data.role==='admin'?'PAYMENT RECORDS':'TEACHER WORKSPACE'}</div><h1>{data.role==='admin'?'Teacher payments':'My payments'}</h1><p className="subtext">{data.role==='admin'?'Approved payroll and manual full-payment history.':'Your approved teaching pay, adjustments and payment status.'}</p></div>{data.role==='admin'?<Link className="btn small" href="/admin/payroll">Open payroll</Link>:<span className="mini-badge">{data.teacher?.name} · {teacherCode(data.teacher?.code||0)}</span>}</section>
+  <p className="record-note">Development database · approved results only. Approval does not mean Paid. Recording a payment does not transfer money. Reversal and Void workflows are not available yet.</p>
+  {error&&<p className="form-error" role="alert">{error}</p>}
+  <section className="card"><div className="card-head"><h2>{data.role==='admin'?'Teacher payments':'My approved payments'}</h2><Button kind="small" disabled={loading} onClick={()=>void load()}>{loading?'Refreshing…':'Refresh payments'}</Button></div>
+   <div className="toolbar"><SelectField label="Payment status" name="status" value={data.status} options={[{id:'',name:'All statuses'},{id:'Not paid',name:'Not paid'},{id:'Paid',name:'Paid'}]} onChange={value=>void load(1,value)}/>{data.role==='admin'&&<SelectField label="Teacher" name="teacher" value={data.teacherFilter} options={[{id:'',name:'All teachers'},...data.teachers.map(t=>({id:t.id,name:t.name+' · '+teacherCode(t.code)}))]} onChange={value=>void load(1,data.status,value)}/>}</div>
+   <div className="table-scroll" role="region" aria-label="Approved teacher payments" tabIndex={0}><table><thead><tr>{['Teacher','Payroll period','Net (MMK)','Payment status','Actions'].map(x=><th scope="col" key={x}>{x}</th>)}</tr></thead><tbody>{data.records.map(r=><tr key={r.run_id+r.teacher_id}><td><strong>{r.teacher_name}</strong><div className="subtext">{teacherCode(r.teacher_code)}</div></td><td>{r.period_start} → {r.period_end}<div className="record-note">{draftCode(r.run_code)} · Approved</div>{data.role==='admin'&&<div className="record-note">{r.paid_count} / {r.teacher_count} teachers paid{r.teacher_count&&r.paid_count===r.teacher_count?' · All paid':''}</div>}</td><td><strong>{moneyText(r.net_mmk)}</strong></td><td><Badge status={r.payment_status}/>{r.paid_date&&<div className="record-note">{r.paid_date} · {r.method}</div>}</td><td><div className="row-actions">{data.role==='admin'&&r.payment_status==='Not paid'&&<Button kind="primary small" disabled={loading} onClick={()=>{setRecording(true);setSelected(r)}}>Record payment</Button>}<Button kind="small" onClick={()=>{setRecording(false);setSelected(r)}}>View details</Button></div></td></tr>)}</tbody></table></div>
+   {!data.records.length&&<div className="empty"><Icon name="leaf"/><h3>{data.status||data.teacherFilter?'No matching payments':'No approved payments yet'}</h3><p>{data.role==='admin'?'Only approved teacher payroll appears here. Drafts and held-only records are excluded.':'Your approved pay will appear after your administrator approves your payroll. Draft amounts are not shown.'}</p>{data.role==='admin'&&<Link className="btn small" href="/admin/payroll">Open payroll</Link>}</div>}
+   <div className="table-foot"><span>{data.total} approved teacher payrolls · page {data.page} of {Math.max(1,Math.ceil(data.total/25))}</span><div className="flex gap-2"><Button disabled={loading||data.page<=1} onClick={()=>void load(data.page-1)}>Previous</Button><Button disabled={loading||data.page*25>=data.total} onClick={()=>void load(data.page+1)}>Next</Button></div></div>
+  </section>
+ </AppShell>{selected&&<PaymentDialog row={selected} recording={recording} serverNow={data.serverNow} onClose={()=>setSelected(null)} onSaved={async()=>{setNotice('Payment record saved. No money was transferred by SayaSync.');if(timer.current)clearTimeout(timer.current);timer.current=setTimeout(()=>setNotice(''),5000);await load();}}/>}{notice&&<div role="status" style={{position:'fixed',bottom:24,right:24,maxWidth:380,padding:'12px 18px',background:'#007acb',color:'#fff',borderRadius:10,zIndex:200}}>{notice}</div>}</>;
+}

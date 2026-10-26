@@ -1,4 +1,6 @@
 'use server';
+import {approvedReportRows} from '../lib/report-server';
+import {financeTotals} from '../lib/report-data';
 import {requireWorkspace} from '../lib/auth';
 import {createClient} from '../lib/supabase/server';
 import {activityWindow,addActivity,type OverviewData} from '../lib/overview-data';
@@ -26,6 +28,7 @@ export async function readAdminOverview():Promise<OverviewData>{
   addActivity(minutes,window.dates,result.data||[]);
   if(!result.data||result.data.length<1000)break;
  }
- return {serverNow,teachers:teachers.count||0,classes:classes.count||0,pending:pending.count||0,corrections:corrections.count||0,
+ const finance=financeTotals(await approvedReportRows());
+ return {finance,serverNow,teachers:teachers.count||0,classes:classes.count||0,pending:pending.count||0,corrections:corrections.count||0,
   missing:missing.count||0,total:recent.count||0,recent:(recent.data||[]) as TeachingRecord[],activity:{...window,minutes}};
 }

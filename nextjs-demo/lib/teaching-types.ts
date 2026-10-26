@@ -4,6 +4,7 @@ export interface TeachingRecord {
  original_start_at:string;original_end_at:string|null;verification:string;record_status:string;
  source:string;reason:string;overlap_flag:boolean;minutes:number|null;version:number;
  overlap_resolution:string;review_comment:string;reviewed_at:string|null;pending_correction:boolean;
+ payroll_locked?:boolean;
 }
 export interface TeachingClass {id:string;code:number;name:string;subject:string;active:boolean}
 export interface TeachingTeacher {id:string;code:number;name:string;active:boolean}

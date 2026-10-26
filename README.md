@@ -12,7 +12,7 @@ The Netlify deployment uses Next.js and Supabase Auth. Public self-registration 
 
 Database-backed features: role-protected login/logout, Teachers, Classes and dated assignments, rate history, teacher check-in/out, completed Admin entries, correction requests, Admin correction review, separate session verification, immutable original timestamps and audit history, and real Admin Overview counts/activity/recent records.
 
-Payroll, payment processing and the legacy Activity log are not connected to real financial workflows yet. Overview payroll figures show unavailable placeholders. Recorded teaching activity includes unverified/rejected completed records and must not be treated as payable time.
+Payroll drafts, reasoned adjustments, approval and locked allocations, manual full-payment records, Teacher payment views, financial Overview totals and Admin Reports/CSV export are database-backed. Draft amounts are excluded from financial reporting. The legacy Activity log remains a prototype. Recorded teaching activity includes unverified/rejected completed records and must not be treated as payable time.
 
 This release connects the existing development backend. It is a development pilot, not a completed payroll product. No payment transfers occur.
 
@@ -46,3 +46,14 @@ Configure `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` 
 ## Original prototype
 
 `dist` and `nextjs-demo/public/legacy` retain the earlier prototype. Unmigrated finance screens still contain fictional data. The real Admin Overview no longer reads fictional browser-storage totals.
+
+## Financial reports release
+
+- [Financial reports and CSV](https://sayasync.netlify.app/admin/reports) — authorized Admin only.
+- [Teacher payments](https://sayasync.netlify.app/teacher/payments) — authorized linked Teacher only.
+
+Production application: https://sayasync.netlify.app/login. Reports show approved payroll only, with Teacher/payment status and whole-payroll-period overlap filters (no date proration). Overview totals span all approved periods. CSV is UTF-8 with formula-injection protection and exact whole-MMK amounts. Current reporting limit:10,000 teacher-payroll rows, with explicit failure rather than truncation. Multi-page reports are not a transactional point-in-time snapshot during concurrent payment updates; refresh after concurrent work.
+
+Recording a payment does not transfer money. Partial payments, reversal and Void workflows are not implemented. Migrations008–010 were manually applied to the development database; reconcile migration history before automated deployment and never replay blindly. No further schema migration is required for Reports.
+
+Validation: production build/TypeScript,30 frozen assets and15 auth/report tests passed. Payroll/payment rollback integration tests passed previously. Admin/Teacher payment flow was owner-confirmed. New Reports/Overview authenticated UI and actual CSV download still need owner acceptance; browser automation was unavailable.

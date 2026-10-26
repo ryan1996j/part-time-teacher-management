@@ -84,7 +84,7 @@ reset role;
 -- Anonymous execution and missing audit are release blockers.
 do $$ begin
  if has_function_privilege('anon','public.review_teaching_session(uuid,uuid,text,jsonb)','execute') then raise exception 'Anonymous review exposed';end if;
- if not exists(select 1 from public.session_events where action='review_correction') then raise exception 'Review audit missing';end if;
+ if not exists(select 1 from public.session_events where school_id='91000000-0000-4000-8000-000000000001' and action='review_correction') then raise exception 'Review audit missing';end if;
 end $$;
 select 'PASS: own/school RLS, admin-only review, retries, pending uniqueness/hold, original preservation, separate verification, stale decisions, withdrawal/rejection, overlap reasons, missing-checkout correction, zero-minute verification denial, audit, denied direct/anon writes' as result;
 rollback;

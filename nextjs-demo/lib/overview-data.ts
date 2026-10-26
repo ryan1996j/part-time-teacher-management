@@ -1,6 +1,7 @@
+import type {FinanceTotals} from './report-data';
 import type {TeachingRecord} from './teaching-types';
 export interface OverviewData {
- serverNow:string;teachers:number;classes:number;pending:number;corrections:number;missing:number;total:number;
+ finance:FinanceTotals;serverNow:string;teachers:number;classes:number;pending:number;corrections:number;missing:number;total:number;
  recent:TeachingRecord[];activity:{dates:string[];from:string;to:string;start:string;end:string;minutes:number[]};
 }
 export function activityWindow(serverNow:string){
