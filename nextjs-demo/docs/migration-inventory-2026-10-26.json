@@ -1,0 +1,62 @@
+[
+  {
+    "version": "202610250001",
+    "file": "202610250001_identity_foundation.sql",
+    "sha256": "a8bc1d39d3b87c67d8ba51d7329ab44285c38bdd5b997a43b1d18b46a653bf74",
+    "remote_status": "manual application recorded in checkpoint; catalog/history comparison pending"
+  },
+  {
+    "version": "202610250002",
+    "file": "202610250002_master_data.sql",
+    "sha256": "92df785df8a3b38b595db37127db4332b6535aac4aaa199c3f7b9a1d2d283bcf",
+    "remote_status": "manual application recorded in checkpoint; catalog/history comparison pending"
+  },
+  {
+    "version": "202610250003",
+    "file": "202610250003_assignment_visibility.sql",
+    "sha256": "74e9602f44544a6e6f100d90171f3000448a70f46fe872fbf1972cfeca88c167",
+    "remote_status": "manual application recorded in checkpoint; catalog/history comparison pending"
+  },
+  {
+    "version": "202610250004",
+    "file": "202610250004_teacher_accounts.sql",
+    "sha256": "6643b2ea6b131ec36e18a7002da1ae5bde5346dd8ebb48e534575b8b0c195fbd",
+    "remote_status": "manual application recorded in checkpoint; catalog/history comparison pending"
+  },
+  {
+    "version": "202610250005",
+    "file": "202610250005_teaching_sessions.sql",
+    "sha256": "88635b786672753a9347a2809200d1bcbcac623db37c015283dc10e33d1e8df6",
+    "remote_status": "manual application recorded in checkpoint; catalog/history comparison pending"
+  },
+  {
+    "version": "202610250006",
+    "file": "202610250006_session_reviews.sql",
+    "sha256": "e6a1ffc76b8c9ce1d233a07ad7b716e7b5a1725f0ea647028a75f271ed7b1118",
+    "remote_status": "manual application recorded in checkpoint; catalog/history comparison pending"
+  },
+  {
+    "version": "202610250007",
+    "file": "202610250007_review_reason_fix.sql",
+    "sha256": "cfa32aab0b5415bc0da783ff237b82148cf999e3adb6a8d8569ae5de5aff2704",
+    "remote_status": "manual application recorded in checkpoint; catalog/history comparison pending"
+  },
+  {
+    "version": "202610250008",
+    "file": "202610250008_payroll_drafts.sql",
+    "sha256": "94e56fc47f6dd4b74974a86b5827cd8234a972a07a931d0aec12b436b4adc107",
+    "remote_status": "manual application recorded in checkpoint; catalog/history comparison pending"
+  },
+  {
+    "version": "202610250009",
+    "file": "202610250009_payroll_approval.sql",
+    "sha256": "3427c2dd9f5584c89f4f284f19b171d22b78fcec5de0867c7c65acf5ce9fbb8a",
+    "remote_status": "manual application recorded in checkpoint; catalog/history comparison pending"
+  },
+  {
+    "version": "202610250010",
+    "file": "202610250010_manual_payments.sql",
+    "sha256": "579eef10e679f7731dc34edf079f0c2e5e1ee877451f65b3208b890204ead161",
+    "remote_status": "manual application recorded in checkpoint; catalog/history comparison pending"
+  }
+]

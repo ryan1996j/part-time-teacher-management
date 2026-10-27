@@ -57,3 +57,7 @@ Production application: https://sayasync.netlify.app/login. Reports show approve
 Recording a payment does not transfer money. Partial payments, reversal and Void workflows are not implemented. Migrations008–010 were manually applied to the development database; reconcile migration history before automated deployment and never replay blindly. No further schema migration is required for Reports.
 
 Validation: production build/TypeScript,30 frozen assets and15 auth/report tests passed. Payroll/payment rollback integration tests passed previously. Admin/Teacher payment flow was owner-confirmed. New Reports/Overview authenticated UI and actual CSV download still need owner acceptance; browser automation was unavailable.
+
+## Development environment
+
+The `development` branch contains isolated Supabase setup/inspection scripts and environment guidance. See [environment setup](nextjs-demo/docs/ENVIRONMENTS.md). Local environment values and account bootstrap are excluded. Production remains on `main`; preview database environment separation still requires configuration before preview writes.
